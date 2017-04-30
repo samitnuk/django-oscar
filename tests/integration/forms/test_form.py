@@ -14,17 +14,13 @@ class TestOrderSearchForm(WebTestCase):
 
     def test_order_search_form(self):
 
-        order1 = factories.create_order(
-            number='11111', user=self.user)
-        order2 = factories.create_order(
-            number='22222', user=self.user)
+        factories.create_order(number='11111', user=self.user)
+        factories.create_order(number='22222', user=self.user)
 
         response = self.app.get(
-            reverse('customer:order-list'), user=self.user
-        )
+            reverse('customer:order-list'), user=self.user)
+        form = response.forms['order-filter']
+        form['date_from'] = '2017-04-28'
+        form.submit()
 
-        user = response.context['user']
-
-        print(user)
-        print(response)
         self.assertEqual(1, 2)
